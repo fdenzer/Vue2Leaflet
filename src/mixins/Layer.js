@@ -2,79 +2,89 @@ export default {
   props: {
     pane: {
       type: String,
-      default: 'overlayPane'
+      default: 'overlayPane',
     },
     attribution: {
       type: String,
-      default: null
+      default: null,
+      custom: true,
     },
     name: {
       type: String,
       custom: true,
-      default: undefined
+      default: undefined,
     },
     layerType: {
       type: String,
       custom: true,
-      default: undefined
+      default: undefined,
     },
     visible: {
       type: Boolean,
       custom: true,
-      default: true
-    }
+      default: true,
+    },
   },
-  mounted () {
+  mounted() {
     this.layerOptions = {
       attribution: this.attribution,
-      pane: this.pane
+      pane: this.pane,
     };
   },
-  beforeDestroy () {
+  beforeDestroy() {
     this.unbindPopup();
     this.unbindTooltip();
     this.parentContainer.removeLayer(this);
   },
   methods: {
-    setAttribution (val, old) {
-      let attributionControl = this.$parent.mapObject.attributionControl;
+    setAttribution(val, old) {
+      const attributionControl = this.$parent.mapObject.attributionControl;
       attributionControl.removeAttribution(old).addAttribution(val);
     },
-    setName (newVal, oldVal) {
-      if (newVal === oldVal) return;
+    setName() {
       this.parentContainer.removeLayer(this);
       if (this.visible) {
         this.parentContainer.addLayer(this);
       }
     },
-    setLayerType (newVal, oldVal) {
-      if (newVal === oldVal) return;
+    setLayerType() {
       this.parentContainer.removeLayer(this);
       if (this.visible) {
         this.parentContainer.addLayer(this);
       }
     },
-    setVisible (newVal, oldVal) {
-      if (newVal === oldVal) return;
+    setVisible(isVisible) {
       if (this.mapObject) {
-        if (newVal) {
+        if (isVisible) {
           this.parentContainer.addLayer(this);
         } else {
-          this.parentContainer.removeLayer(this);
+          if (this.parentContainer.hideLayer) {
+            this.parentContainer.hideLayer(this);
+          } else {
+            this.parentContainer.removeLayer(this);
+          }
         }
       }
     },
-    unbindTooltip () {
+    unbindTooltip() {
       const tooltip = this.mapObject ? this.mapObject.getTooltip() : null;
       if (tooltip) {
         tooltip.unbindTooltip();
       }
     },
-    unbindPopup () {
+    unbindPopup() {
       const popup = this.mapObject ? this.mapObject.getPopup() : null;
       if (popup) {
         popup.unbindPopup();
       }
-    }
-  }
+    },
+    updateVisibleProp(value) {
+      /**
+       * Triggers when the visible prop needs to be updated
+       * @type {boolean}
+       * @property {boolean} value - value of the visible property
+       */
+      this.$emit('update:visible', value);
+    },
+  },
 };

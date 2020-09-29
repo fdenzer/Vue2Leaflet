@@ -1,4 +1,4 @@
-// Type definitions for vue2-leaflet v1.2.3
+// Type definitions for vue2-leaflet v2.0.x
 // Project: https://github.com/KoRiGaN/Vue2Leaflet/
 // Definitions by: Matthew Meehan <https://github.com/HIMISOCOOL>
 
@@ -8,6 +8,9 @@
  * type parentContainer in components
  * type findRealParent
  * replace all misc any types with proper types
+ */
+/**
+ * 'L' references the leaflet package, such as used with L.Bounds
  */
 
 declare module "vue2-leaflet" {
@@ -503,11 +506,11 @@ declare module "vue2-leaflet" {
     /**
      * @default null
      */
-    bounds: L.BoundsExpression | null;
+    bounds: L.LatLngBoundsExpression | null;
     /**
      * @default null
      */
-    maxBounds: L.BoundsExpression | null;
+    maxBounds: L.LatLngBoundsExpression | null;
     /**
      * @default 0
      */
@@ -552,7 +555,6 @@ declare module "vue2-leaflet" {
     ready: boolean;
     lastSetCenter: L.LatLng | null;
     lastSetBounds: L.Bounds | null;
-    lastSetZoom: number | null;
     layerControl?: any;
     layersToAdd: any[];
     mapObject: L.Map;
@@ -578,7 +580,7 @@ declare module "vue2-leaflet" {
 
     setPadding(newVal: L.PointExpression, oldVal?: L.PointExpression): void;
 
-    fitBounds(bounds: L.BoundsExpression): void;
+    fitBounds(bounds: L.LatLngBoundsExpression): void;
 
     moveEndHandler(): void;
   }
@@ -623,7 +625,7 @@ declare module "vue2-leaflet" {
     /**
      * @default []
      */
-    latLongs: L.LatLngExpression[];
+    latLngs: L.LatLngExpression[];
 
     // data
     ready: boolean;
@@ -635,7 +637,7 @@ declare module "vue2-leaflet" {
     /**
      * @default []
      */
-    latLongs: L.LatLngExpression[];
+    latLngs: L.LatLngExpression[];
 
     // data
     ready: boolean;
